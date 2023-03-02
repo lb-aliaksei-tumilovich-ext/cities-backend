@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - logicalFilePath: 20230301-1220-create-cities-seq.yaml
+  - version: 1.0
+  - changeSet:
+      id: 20230301-1220-create-cities-seq-1
+      author: AliakseiTumilovich
+      changes:
+        - createSequence:
+            maxValue: 99999999999
+            sequenceName: CITIES_SEQ
+            startValue: 1

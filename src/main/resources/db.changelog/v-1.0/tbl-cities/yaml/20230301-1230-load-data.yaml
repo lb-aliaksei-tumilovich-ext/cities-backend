@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - logicalFilePath: 20230301-1230-load-data.yaml
+  - version: 1.0
+  - preConditions:
+      onFail: HALT
+      onError: HALT
+  - changeSet:
+      id: 20230301-1230-load-data-1
+      labels: example
+      author: spanner-examples
+      context: dev
+      changes:
+        - loadData:
+            tableName: CITIES
+            usePreparedStatements: false
+            separator: ','
+            relativeToChangelogFile: true
+            file: ../data/cities.csv
+            encoding: UTF-8
+            quotchar:  ''''
+            columns:
+              - column:
+                  header: id
+                  name:   ID
+                  type:   NUMERIC
+              - column:
+                  header: name
+                  name:   NAME
+                  type:   VARCHAR
+              - column:
+                  header: photo
+                  name:   URL
+                  type:   STRING

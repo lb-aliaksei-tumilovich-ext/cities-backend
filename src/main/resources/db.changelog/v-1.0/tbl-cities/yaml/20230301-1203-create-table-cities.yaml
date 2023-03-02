@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - logicalFilePath: 20230301-1203-create-table-cities.yaml
+  - version: 1.0
+  - changeSet:
+      id: 20230301-1203-create-table-cities-1
+      author: TumilovichAliaksei
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  remarks: City name
+                  type: VARCHAR2(200)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: url
+                  remarks: Photo url
+                  type: VARCHAR2(1000)
+            remarks: Cities information
+            tableName: CITIES

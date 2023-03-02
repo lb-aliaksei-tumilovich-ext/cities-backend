@@ -1,0 +1,25 @@
+version: '3'
+
+volumes:
+  postgres_data:
+    driver: local
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: cities
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  cities:
+    image: tumilovich/cities
+    environment:
+      DB_HOST: host.docker.internal
+    ports:
+      - "9000:9000"
+    depends_on:
+      - postgres
