@@ -1,6 +1,7 @@
 package com.andersenlab.cities.service;
 
 import com.andersenlab.cities.dto.CityDto;
+import com.andersenlab.cities.dto.CreateCityRequest;
 import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.dto.UpdateCityRequest;
 
@@ -20,4 +21,6 @@ public interface CityService {
     CityDto updateCity(Long id, UpdateCityRequest city);
 
     CityDto getCity(Long id);
+
+    CityDto createCity(CreateCityRequest createCityRequest);
 }

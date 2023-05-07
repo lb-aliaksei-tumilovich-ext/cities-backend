@@ -2,6 +2,7 @@ package com.andersenlab.cities.service.impl;
 
 import com.andersenlab.cities.AbstractTest;
 import com.andersenlab.cities.dto.CityDto;
+import com.andersenlab.cities.dto.CreateCityRequest;
 import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.exception.enums.BadRequestErrorEnum;
 import com.andersenlab.cities.exception.exceptions.BadRequestException;
@@ -33,6 +34,9 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 class CityServiceImplTest extends AbstractTest {
+    public static final CreateCityRequest CREATE_CITY_REQUEST = CreateCityRequest.builder().
+       name(CITY_1.getName()).
+       url(CITY_1.getUrl()).build();
     @Mock
     private CityRepository cityRepository;
     private CityMapper mapper;
@@ -106,5 +110,16 @@ class CityServiceImplTest extends AbstractTest {
 
         assertEquals(BadRequestErrorEnum.CITY_NOT_EXISTS.getMessage(), actual.getMessage());
         assertEquals(BadRequestErrorEnum.CITY_NOT_EXISTS.getErrorCode(), actual.getErrorCode());
+    }
+
+    @Test
+    public void createCity_success() {
+        when(cityRepository.save(any())).thenReturn(CITY_1);
+
+        CityDto city = cityService.createCity(CREATE_CITY_REQUEST);
+
+        assertEquals(CITY_1.getName(), city.name());
+        assertEquals(CITY_1.getUrl(), city.url());
+        assertEquals(CITY_1.getId(), city.id());
     }
 }

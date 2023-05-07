@@ -1,6 +1,7 @@
 package com.andersenlab.cities.integrations;
 
 import com.andersenlab.cities.dto.CityDto;
+import com.andersenlab.cities.dto.CreateCityRequest;
 import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.dto.UpdateCityRequest;
 import com.andersenlab.cities.exception.dto.ErrorResponse;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -218,10 +220,11 @@ public class CityControllerIT extends AbstractIT {
     @Test
     public void updateCity_validation_error() throws Exception {
 
-        ErrorResponse actualResponse = OBJECT_MAPPER.readValue(mockMvc.perform(put(PUT_CITIES_URL + CITY_ID)
-              .content(OBJECT_MAPPER.writeValueAsString(UPDATE_CITY_BAD_REQUEST))
-              .contentType(MediaType.APPLICATION_JSON)
-              .header(HttpHeaders.AUTHORIZATION, ACCESS_CREDENTIALS))
+        ErrorResponse actualResponse = OBJECT_MAPPER.readValue(mockMvc.perform(
+              put(PUT_CITIES_URL + CITY_ID)
+                 .content(OBJECT_MAPPER.writeValueAsString(UPDATE_CITY_BAD_REQUEST))
+                 .contentType(MediaType.APPLICATION_JSON)
+                 .header(HttpHeaders.AUTHORIZATION, ACCESS_CREDENTIALS))
            .andDo(print())
            .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
            .andReturn().getResponse().getContentAsString(), ErrorResponse.class);
@@ -254,8 +257,22 @@ public class CityControllerIT extends AbstractIT {
            .andExpect(status().is(HttpStatus.BAD_REQUEST.value()))
            .andReturn().getResponse().getContentAsString(), ErrorResponse.class);
 
-        assertEquals(actualResponse.getErrorCode(),BadRequestErrorEnum.CITY_NOT_EXISTS.getErrorCode());
+        assertEquals(actualResponse.getErrorCode(), BadRequestErrorEnum.CITY_NOT_EXISTS.getErrorCode());
         assertEquals(actualResponse.getErrorMessage(), BadRequestErrorEnum.CITY_NOT_EXISTS.getMessage());
+    }
+
+    @Test void createCity_success() throws Exception {
+
+        CityDto actualResponse = OBJECT_MAPPER.readValue(mockMvc.perform(post(CITIES_URL)
+              .content(OBJECT_MAPPER.writeValueAsString(CreateCityRequest.builder().name(NEW_NAME).url(CITY_URL).build()))
+              .contentType(MediaType.APPLICATION_JSON)
+              .header(HttpHeaders.AUTHORIZATION, ACCESS_CREDENTIALS))
+           .andDo(print())
+           .andExpect(status().is(HttpStatus.CREATED.value()))
+           .andReturn().getResponse().getContentAsString(), CityDto.class);
+
+        assertEquals(actualResponse.name(), NEW_NAME);
+        assertEquals(actualResponse.url(), CITY_URL);
     }
 
 }

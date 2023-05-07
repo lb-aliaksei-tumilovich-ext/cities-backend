@@ -1,6 +1,7 @@
 package com.andersenlab.cities.utils;
 
 import com.andersenlab.cities.dto.CityDto;
+import com.andersenlab.cities.dto.CreateCityRequest;
 import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.model.City;
 
@@ -35,6 +36,14 @@ public class CityMapper {
            .id(city.getId())
            .name(city.getName())
            .url(city.getUrl())
+           .build();
+    }
+
+    public City mapToCity(CreateCityRequest createCityRequest) {
+
+        return City.builder()
+           .name(createCityRequest.name())
+           .url(createCityRequest.url())
            .build();
     }
 }

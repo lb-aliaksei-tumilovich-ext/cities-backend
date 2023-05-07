@@ -1,18 +1,19 @@
 package com.andersenlab.cities.controller;
 
 import com.andersenlab.cities.dto.CityDto;
+import com.andersenlab.cities.dto.CreateCityRequest;
 import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.dto.UpdateCityRequest;
 import com.andersenlab.cities.service.CityService;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +44,21 @@ public class CityController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get cities1")
+    @ApiOperation(value = "Get cities")
     public PageResponse<CityDto> getCities(
        @RequestParam(defaultValue = "0") @Range(min = 0, message = "page_must_be_positive") int page,
        @RequestParam(defaultValue = "20") @Range(min = 0, message = "size_must_be_positive") int size,
        @RequestParam(value = "name", required = false) String name) {
         return cityService.getCities(PageRequest.of(page, size), name);
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value = "Create city")
+    public CityDto createCities(@Valid @RequestBody CreateCityRequest createCityRequest) {
+        return cityService.createCity(createCityRequest);
+    }
+
 
     @GetMapping({ "{id}" })
     @ResponseStatus(HttpStatus.OK)
