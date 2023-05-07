@@ -27,13 +27,13 @@ class ModelMapperTest extends AbstractTest {
     public static final int SIZE = 5;
     public static final int TOTAL_PAGES = 1;
     public static final int TOTAL_ELEMENTS = 2;
-    private final CityMapper cityMapper = new CityMapper();
+    private final Mapper mapper = new Mapper();
     Page<City> page = new PageImpl<>(CITIES, PageRequest.of(PAGE, SIZE), TOTAL_ELEMENTS);
 
     @Test
     public void mapToPageResponse_success() {
 
-        PageResponse<CityDto> actual = cityMapper.mapToPageResponse(page);
+        PageResponse<CityDto> actual = mapper.mapToPageResponse(page);
 
         assertEquals(TOTAL_ELEMENTS, actual.totalElements());
         assertEquals(TOTAL_PAGES, actual.totalPages());

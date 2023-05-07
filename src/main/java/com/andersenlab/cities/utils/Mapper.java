@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  *06.03.2023
  */
 @Component
-public class CityMapper {
+public class Mapper {
     public PageResponse<CityDto> mapToPageResponse(Page<City> cityPage) {
         return PageResponse.<CityDto>builder()
            .currentPage(cityPage.getNumber())

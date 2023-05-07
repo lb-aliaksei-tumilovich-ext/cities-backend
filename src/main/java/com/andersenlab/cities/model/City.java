@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="cities", schema="public")
-public class City {
+public class City implements Identifiable<Long>{
 
     @Id
     @GeneratedValue(generator = "cities_seq_generator")
@@ -41,4 +41,8 @@ public class City {
     @Column(name = "url", nullable = false, columnDefinition = "text", length = 800)
     private String url;
 
+    @Override
+    public Long getById() {
+        return id;
+    }
 }

@@ -9,7 +9,7 @@ import com.andersenlab.cities.exception.exceptions.BadRequestException;
 import com.andersenlab.cities.model.City;
 import com.andersenlab.cities.repository.CityRepository;
 import com.andersenlab.cities.service.CityService;
-import com.andersenlab.cities.utils.CityMapper;
+import com.andersenlab.cities.utils.Mapper;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class CityServiceImpl implements CityService {
     private final CityRepository cityRepository;
-    private final CityMapper mapper;
+    private final Mapper mapper;
 
     @Override
     public PageResponse<CityDto> getCities(Pageable pageRequest, String name) {

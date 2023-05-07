@@ -7,7 +7,7 @@ import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.exception.enums.BadRequestErrorEnum;
 import com.andersenlab.cities.exception.exceptions.BadRequestException;
 import com.andersenlab.cities.repository.CityRepository;
-import com.andersenlab.cities.utils.CityMapper;
+import com.andersenlab.cities.utils.Mapper;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,12 +39,12 @@ class CityServiceImplTest extends AbstractTest {
        url(CITY_1.getUrl()).build();
     @Mock
     private CityRepository cityRepository;
-    private CityMapper mapper;
+    private Mapper mapper;
     private CityServiceImpl cityService;
 
     @BeforeEach
     public void init() {
-        mapper = new CityMapper();
+        mapper = new Mapper();
         cityService = new CityServiceImpl(cityRepository, mapper);
     }
 
