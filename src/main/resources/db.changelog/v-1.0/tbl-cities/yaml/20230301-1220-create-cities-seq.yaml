@@ -8,4 +8,4 @@ databaseChangeLog:
         - createSequence:
             maxValue: 99999999999
             sequenceName: CITIES_SEQ
-            startValue: 1
+            startValue: 1001

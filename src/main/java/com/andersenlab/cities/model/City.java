@@ -32,7 +32,7 @@ public class City {
     @Id
     @GeneratedValue(generator = "cities_seq_generator")
     @SequenceGenerator(name = "cities_seq_generator",
-       sequenceName = "cities_seq", allocationSize = 1)
+       sequenceName = "cities_seq", allocationSize = 1, initialValue = 1001)
     private Long id;
 
     @Column(name = "name", nullable = false, columnDefinition = "text", length = 100)

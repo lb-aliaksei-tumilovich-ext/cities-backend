@@ -1,6 +1,7 @@
 package com.andersenlab.cities.service.impl;
 
 import com.andersenlab.cities.dto.CityDto;
+import com.andersenlab.cities.dto.CreateCityRequest;
 import com.andersenlab.cities.dto.PageResponse;
 import com.andersenlab.cities.dto.UpdateCityRequest;
 import com.andersenlab.cities.exception.enums.BadRequestErrorEnum;
@@ -11,9 +12,8 @@ import com.andersenlab.cities.service.CityService;
 import com.andersenlab.cities.utils.CityMapper;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -42,6 +42,10 @@ public class CityServiceImpl implements CityService {
         if (StringUtil.isNotEmpty(name)) {
             cities = cityRepository.findAllByNameContainsIgnoreCase(pageRequest, name);
         } else {
+            Specification<City> nameLike =
+                    (root, query, criteriaBuilder) ->
+                            criteriaBuilder.like(root.get("name"), "%"+name+"%");
+
             cities = cityRepository.findAll(pageRequest);
         }
         return mapper.mapToPageResponse(cities);
@@ -62,10 +66,19 @@ public class CityServiceImpl implements CityService {
         }
     }
 
-    @Override public CityDto getCity(Long id) {
+    @Override
+    public CityDto getCity(Long id) {
         log.info("get city by id {}", id);
         Optional<City> optionalCity = cityRepository.findById(id);
         City city = optionalCity.orElseThrow(() -> new BadRequestException(BadRequestErrorEnum.CITY_NOT_EXISTS));
         return mapper.mapToCityDto(city);
+    }
+
+    @Override
+    public CityDto createCity(CreateCityRequest createCityRequest) {
+        log.info("create city {}", createCityRequest);
+        City city = mapper.mapToCity(createCityRequest);
+        City savedCity = cityRepository.save(city);
+        return mapper.mapToCityDto(savedCity);
     }
 }
